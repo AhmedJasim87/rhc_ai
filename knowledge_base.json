@@ -1,0 +1,31 @@
+{
+    "conditions": {
+        "common_cold": {
+            "symptoms": ["cough", "sore throat", "runny nose", "sneezing", "congestion"],
+            "urgency": "low"
+        },
+        "flu": {
+            "symptoms": ["fever", "cough", "sore throat", "body aches", "headache", "fatigue"],
+            "urgency": "medium"
+        },
+        "allergies": {
+            "symptoms": ["sneezing", "itchy eyes", "runny nose", "congestion"],
+            "urgency": "low"
+        },
+        "strep_throat": {
+            "symptoms": ["sore throat", "fever", "swollen lymph nodes", "difficulty swallowing"],
+            "urgency": "medium"
+        },
+        "migraine": {
+            "symptoms": ["headache", "nausea", "sensitivity to light", "sensitivity to sound"],
+            "urgency": "medium"
+        }
+    },
+    "recommendations": {
+        "common_cold": "For cold symptoms: rest, drink fluids, and consider OTC cold medicine.",
+        "flu": "For flu symptoms: rest, stay hydrated, and consider seeing a doctor for antiviral medication.",
+        "allergies": "For allergies: try antihistamines and avoid known allergens.",
+        "strep_throat": "Strep throat usually requires antibiotics. Please see a doctor.",
+        "migraine": "For migraines: rest in a dark, quiet room and consider pain medication."
+    }
+}
