@@ -1,0 +1,10 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .text { font-family: 'Playfair Display', serif; font-size: 36px; fill: #2563eb; font-weight: 700; }
+        .icon { fill: #3b82f6; }
+    </style>
+    <path class="icon" d="M20 30a10 10 0 0 1 20 0v10a10 10 0 0 1-20 0V30z"/>
+    <path class="icon" d="M50 20a10 10 0 0 1 20 0v20a10 10 0 0 1-20 0V20z"/>
+    <path class="icon" d="M80 10a10 10 0 0 1 20 0v30a10 10 0 0 1-20 0V10z"/>
+    <text class="text" x="110" y="40">RHC AI</text>
+</svg>
