@@ -1,0 +1,78 @@
+{
+    "conditions": {
+      "common_cold": {
+        "symptoms": ["cough", "sore throat", "runny nose", "sneezing", "congestion", "headache", "mild fever"],
+        "urgency": "low"
+      },
+      "influenza (flu)": {
+        "symptoms": ["high fever", "chills", "muscle aches", "fatigue", "headache", "dry cough", "sore throat"],
+        "urgency": "medium"
+      },
+      "allergic rhinitis": {
+        "symptoms": ["sneezing", "itchy eyes", "runny nose", "nasal congestion", "postnasal drip"],
+        "urgency": "low"
+      },
+      "strep throat": {
+        "symptoms": ["severe sore throat", "painful swallowing", "fever", "swollen lymph nodes", "white patches on tonsils"],
+        "urgency": "medium"
+      },
+      "migraine": {
+        "symptoms": ["throbbing headache", "nausea", "vomiting", "sensitivity to light", "sensitivity to sound", "aura"],
+        "urgency": "medium"
+      },
+      "COVID-19": {
+        "symptoms": ["fever", "dry cough", "shortness of breath", "fatigue", "loss of taste", "loss of smell"],
+        "urgency": "high"
+      },
+      "sinus infection": {
+        "symptoms": ["facial pain", "nasal congestion", "thick nasal discharge", "cough", "headache", "fever"],
+        "urgency": "medium"
+      },
+      "bronchitis": {
+        "symptoms": ["persistent cough", "mucus production", "fatigue", "mild fever", "chest discomfort"],
+        "urgency": "medium"
+      },
+      "pneumonia": {
+        "symptoms": ["high fever", "chills", "cough with phlegm", "shortness of breath", "chest pain"],
+        "urgency": "high"
+      },
+      "gastroenteritis": {
+        "symptoms": ["diarrhea", "nausea", "vomiting", "abdominal cramps", "mild fever"],
+        "urgency": "medium"
+      }
+    },
+    "recommendations": {
+      "common_cold": "Rest, drink fluids, and use OTC cold remedies. Consider saline nasal sprays. Seek care if symptoms last >10 days.",
+      "influenza (flu)": "Antiviral medications may help if started within 48 hours. Stay hydrated and monitor breathing. Get annual flu vaccine.",
+      "allergic rhinitis": "Try antihistamines (loratadine, cetirizine) and nasal corticosteroids. Identify and avoid triggers.",
+      "strep throat": "Requires antibiotic treatment. See doctor for rapid strep test. Contagious until 24hrs after antibiotics.",
+      "migraine": "Rest in dark, quiet room. NSAIDs may help mild cases. Triptans for moderate-severe. Track triggers.",
+      "COVID-19": "Isolate immediately and get tested. Use pulse oximeter to monitor oxygen levels. Seek ER if SpO2 <92%.",
+      "sinus infection": "Try nasal irrigation and decongestants. Antibiotics may be needed if bacterial. Steam inhalation helps.",
+      "bronchitis": "Increase fluid intake. Use humidifier. OTC cough suppressants at night. Avoid smoke/dust.",
+      "pneumonia": "Requires medical evaluation. Bacterial pneumonia needs antibiotics. Hospitalization may be needed.",
+      "gastroenteritis": "Stay hydrated with electrolyte solutions. BRAT diet (bananas, rice, applesauce, toast). Seek care for blood in stool."
+    },
+    "red_flags": {
+      "emergency": [
+        "difficulty breathing",
+        "chest pain",
+        "severe headache",
+        "confusion",
+        "uncontrolled bleeding",
+        "sudden weakness",
+        "severe burns",
+        "poisoning",
+        "suicidal thoughts"
+      ],
+      "urgent_care": [
+        "high fever (>103°F)",
+        "persistent vomiting",
+        "severe dehydration",
+        "worsening symptoms",
+        "unexplained rash",
+        "eye injury",
+        "possible fracture"
+      ]
+    }
+  }
