@@ -138,5 +138,5 @@ def get_recommendations(conditions, severity):
     
     return recommendations
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000) # Debug mode should be off in production
+    app.run(host='0.0.0.0', port=10000) # Debug mode should be off in production
     # app.run(debug=True)  # Uncomment for development
