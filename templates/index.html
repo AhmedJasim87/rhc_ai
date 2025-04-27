@@ -3,78 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapid Health Checker (RHC) AI</title>
+    <title>RHC AI | Medical Symptom Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            color: #333;
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --text: #1f2937;
+            --light: #f9fafb;
         }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .logo-icon {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
         }
         .container {
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        select, input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #3498db;
+        .btn {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
+            transition: all 0.3s;
         }
-        button:hover {
-            background-color: #2980b9;
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
         }
-        #results {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 4px;
-            background-color: #e8f4fc;
-            display: none;
-        }
-        .symptom-item {
-            display: flex;
-            margin-bottom: 10px;
-        }
-        .symptom-item input {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
-        .remove-btn {
-            background-color: #e74c3c;
-            padding: 5px 10px;
-        }
-        #add-symptom {
-            background-color: #2ecc71;
-            margin-bottom: 15px;
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="logo-container">
+            <i class="fas fa-heartbeat logo-icon"></i>
+            <div class="logo-text">RHC AI</div>
+        </div>
+        
     <h1>Rapid Health Checker (RHC) AI</h1>
     <div class="container">
         <div class="form-group">
