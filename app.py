@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import json
 import random
 from datetime import datetime
@@ -11,13 +11,8 @@ app.secret_key = os.urandom(24)  # Required for sessions
 with open('knowledge_base.json') as f:
     knowledge_base = json.load(f)
 
-# Symptom severity weights with time modifiers
-SEVERITY_WEIGHTS = {
-    'mild': 1,
-    'moderate': 2,
-    'severe': 3
-}
-
+# Severity weights with time modifiers
+SEVERITY_WEIGHTS = {'mild': 1, 'moderate': 2, 'severe': 3}
 TIME_MODIFIERS = {
     'less than 24 hours': 0.8,
     '1-3 days': 1.0,
@@ -25,7 +20,12 @@ TIME_MODIFIERS = {
     'more than 1 week': 1.5
 }
 
-# User session management
+# Serve static files (for logo)
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
+
+# Initialize user session
 @app.before_request
 def init_session():
     if 'history' not in session:
@@ -35,7 +35,7 @@ def init_session():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', current_year=datetime.now().year)
 
 @app.route('/check_symptoms', methods=['POST'])
 def check_symptoms():
@@ -48,15 +48,14 @@ def check_symptoms():
         if not symptoms:
             return jsonify({'error': 'Please enter at least one symptom'}), 400
 
-        # Enhanced analysis
         possible_conditions = analyze_symptoms(symptoms, duration, severity)
         recommendations = get_recommendations(possible_conditions, severity)
         
-        # Log this check in session history
+        # Log this check
         log_entry = {
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M"),
             'symptoms': symptoms,
-            'possible_conditions': possible_conditions,
+            'conditions': possible_conditions,
             'severity': severity
         }
         session['history'].append(log_entry)
@@ -80,11 +79,10 @@ def get_history():
     })
 
 def analyze_symptoms(symptoms, duration, severity):
-    """Enhanced symptom analysis with time and severity weighting"""
+    """Enhanced symptom analysis with weighting"""
     condition_scores = {}
     
     for condition, data in knowledge_base['conditions'].items():
-        # Calculate symptom matches with partial matching
         matched_symptoms = []
         for user_symptom in symptoms:
             for known_symptom in data['symptoms']:
@@ -93,59 +91,53 @@ def analyze_symptoms(symptoms, duration, severity):
                     break
         
         if matched_symptoms:
-            # Base score with partial matches
             base_score = len(matched_symptoms) / len(data['symptoms'])
-            
-            # Apply severity and duration modifiers
-            severity_mod = SEVERITY_WEIGHTS.get(severity, 1)
-            time_mod = TIME_MODIFIERS.get(duration, 1)
-            
-            # Calculate final score
-            final_score = base_score * severity_mod * time_mod
+            final_score = (base_score * 
+                         SEVERITY_WEIGHTS.get(severity, 1) * 
+                         TIME_MODIFIERS.get(duration, 1))
             condition_scores[condition] = {
                 'score': final_score,
                 'matched_symptoms': matched_symptoms
             }
     
-    # Sort by score and return top 3
-    sorted_conditions = sorted(condition_scores.items(), 
-                             key=lambda x: x[1]['score'], 
-                             reverse=True)[:3]
-    
-    return [cond[0] for cond in sorted_conditions]
+    return [cond[0] for cond in 
+           sorted(condition_scores.items(), 
+                 key=lambda x: x[1]['score'], 
+                 reverse=True)[:3]]
 
 def get_recommendations(conditions, severity):
-    """Generate personalized recommendations"""
+    """Generate personalized medical advice"""
     recommendations = []
     
     # Severity-based advice
     if severity == 'mild':
-        recommendations.append("Your symptoms seem mild but should be monitored.")
+        recommendations.append("Monitor symptoms and consider OTC remedies.")
     elif severity == 'moderate':
-        recommendations.append("Moderate symptoms may require professional evaluation soon.")
+        recommendations.append("Consult a healthcare provider if symptoms persist.")
     else:
-        recommendations.append("Severe symptoms warrant immediate medical attention.")
+        recommendations.append("Seek immediate medical attention for severe symptoms.")
     
     # Condition-specific advice
     for condition in conditions[:2]:
         if condition in knowledge_base['recommendations']:
             rec = knowledge_base['recommendations'][condition]
-            recommendations.append(f"For {condition}: {rec}")
+            recommendations.append(f"{condition}: {rec}")
     
     # General health tips
-    general_tips = random.choice([
-        "Stay hydrated and get adequate rest.",
-        "Monitor your temperature regularly.",
-        "Avoid strenuous activity while symptomatic."
-    ])
-    recommendations.append(general_tips)
+    tips = [
+        "Stay hydrated and get plenty of rest.",
+        "Avoid strenuous activity while symptomatic.",
+        "Monitor your temperature regularly."
+    ]
+    recommendations.append(random.choice(tips))
     
-    # Always include disclaimer
+    # Disclaimer
     recommendations.append(
-        "Remember: This tool doesn't replace professional medical advice."
+        "This tool is not a substitute for professional medical diagnosis."
     )
     
     return recommendations
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000) # Debug mode should be off in production
+    # app.run(debug=True)  # Uncomment for development
