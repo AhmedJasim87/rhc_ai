@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Health Checker (RHC) AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #e8f4fc;
+            display: none;
+        }
+        .symptom-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .symptom-item input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .remove-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+        }
+        #add-symptom {
+            background-color: #2ecc71;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapid Health Checker (RHC) AI</h1>
+    <div class="container">
+        <div class="form-group">
+            <label for="symptoms">Your Symptoms:</label>
+            <div id="symptoms-container">
+                <div class="symptom-item">
+                    <input type="text" class="symptom" placeholder="e.g., headache, fever">
+                    <button class="remove-btn" onclick="removeSymptom(this)">×</button>
+                </div>
+            </div>
+            <button id="add-symptom" onclick="addSymptom()">+ Add Another Symptom</button>
+        </div>
+
+        <div class="form-group">
+            <label for="duration">How long have you had these symptoms?</label>
+            <select id="duration">
+                <option value="less than 24 hours">Less than 24 hours</option>
+                <option value="1-3 days">1-3 days</option>
+                <option value="4-7 days">4-7 days</option>
+                <option value="more than 1 week">More than 1 week</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="severity">How severe are your symptoms?</label>
+            <select id="severity">
+                <option value="mild">Mild - noticeable but not disruptive</option>
+                <option value="moderate">Moderate - interferes with daily activities</option>
+                <option value="severe">Severe - prevents normal activities</option>
+            </select>
+        </div>
+
+        <button onclick="checkSymptoms()">Check Symptoms</button>
+
+        <div id="results">
+            <h2>Possible Conditions:</h2>
+            <div id="conditions"></div>
+            
+            <h2>Recommendations:</h2>
+            <div id="recommendations"></div>
+            
+            <p><strong>Disclaimer:</strong> This tool is for informational purposes only and is not a substitute for professional medical advice.</p>
+        </div>
+    </div>
+
+    <script>
+        function addSymptom() {
+            const container = document.getElementById('symptoms-container');
+            const div = document.createElement('div');
+            div.className = 'symptom-item';
+            div.innerHTML = `
+                <input type="text" class="symptom" placeholder="e.g., headache, fever">
+                <button class="remove-btn" onclick="removeSymptom(this)">×</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeSymptom(button) {
+            if (document.querySelectorAll('.symptom-item').length > 1) {
+                button.parentElement.remove();
+            }
+        }
+
+        function checkSymptoms() {
+            const symptoms = Array.from(document.querySelectorAll('.symptom'))
+                .map(input => input.value.trim())
+                .filter(symptom => symptom.length > 0);
+            
+            const duration = document.getElementById('duration').value;
+            const severity = document.getElementById('severity').value;
+
+            if (symptoms.length === 0) {
+                alert('Please enter at least one symptom');
+                return;
+            }
+
+            fetch('/check_symptoms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    symptoms: symptoms,
+                    duration: duration,
+                    severity: severity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                // Display results
+                const conditionsDiv = document.getElementById('conditions');
+                const recommendationsDiv = document.getElementById('recommendations');
+                
+                conditionsDiv.innerHTML = data.possible_conditions.length > 0
+                    ? '<ul><li>' + data.possible_conditions.join('</li><li>') + '</li></ul>'
+                    : '<p>No specific conditions identified based on your symptoms.</p>';
+                
+                recommendationsDiv.innerHTML = '<ul><li>' + data.recommendations.join('</li><li>') + '</li></ul>';
+                
+                document.getElementById('results').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
